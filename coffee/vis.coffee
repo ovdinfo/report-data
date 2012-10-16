@@ -165,6 +165,7 @@ class BubbleChart
   J = new Date(2012,10,4)
   yScale = d3.scale.linear().domain([0, 700]).range([@height, 0])
   xScale = d3.time.scale().domain([B, J]).range([10, @width])
+  
   display_by_date: () =>
     @force.gravity(@layout_gravity)
       .charge(this.charge)
@@ -187,6 +188,31 @@ class BubbleChart
       d.x = d.x + (x - d.x) * (@damper + 0.001) 
       d.y = d.y + (y - d.y) * (@damper + 1) 
       
+  display_by_type: () =>
+    @force.gravity(@layout_gravity)
+      .charge(this.charge)
+      .friction(0.9)
+      .on "tick", (e) =>
+        @circles.each(this.move_towards_type(e.alpha))
+          .attr("cx", (d) -> d.x)
+          .attr("cy", (d) -> d.y)
+    @force.start()
+    
+    this.hide_years()
+    this.hide_axis()
+ 
+   move_towards_type: (alpha) =>
+    (d) =>
+      targetY = 0
+      targetX = 0
+      if d.org is "Стихийное"
+        targetX = 100
+        targetY = 100
+      #alert d.org
+      d.y = d.y + (targetY - d.y) * Math.sin(Math.PI * (1 - alpha*10)) * 0.6
+      d.x = d.x + (targetX - d.x) * Math.sin(Math.PI * (1 - alpha*10)) * 0.4
+ 
+ 
   display_axis: () =>
     margin =
       top: 19.5
@@ -268,6 +294,8 @@ $ ->
     chart.display_by_year()
   root.display_chron = () =>
     chart.display_by_date()
+  root.display_type = () =>
+    chart.display_by_type()
   root.toggle_view = (view_type) =>
     if view_type == 'cons'
       root.display_year()
@@ -275,5 +303,7 @@ $ ->
       root.display_all()
     else if view_type == 'chron'
       root.display_chron()
+    else if view_type == 'type'
+      root.display_type()
 
   d3.csv "data/data.csv", render_vis
