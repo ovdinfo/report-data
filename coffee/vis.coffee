@@ -129,8 +129,9 @@ class BubbleChart
           .each(that.totalSort(e.alpha))
           .attr("cx", (d) -> d.x)
           .attr("cy", (d) -> d.y)
+          .attr("data-legend", (d) -> d.subject)
     @force.start()
-
+    this.display_label()
     this.hide_years()
     this.hide_axis()
 
@@ -152,7 +153,8 @@ class BubbleChart
           .attr("cx", (d) -> d.x)
           .attr("cy", (d) -> d.y)
     @force.start()
-
+    
+    this.hide_label()
     this.hide_axis()
     this.display_years()
 
@@ -178,6 +180,7 @@ class BubbleChart
           .attr("cy", (d) -> d.y)
     @force.start()
     
+    this.hide_label()
     this.hide_years()
     this.display_axis()
     
@@ -200,6 +203,7 @@ class BubbleChart
           .attr("cy", (d) -> d.y)
     @force.start()
     
+    this.hide_label()
     this.hide_years()
     this.hide_axis()
  
@@ -213,7 +217,15 @@ class BubbleChart
       #alert d.org
       d.y = d.y + (targetY - d.y) * Math.sin(Math.PI * (1 - alpha*10)) * 0.6
       d.x = d.x + (targetX - d.x) * Math.sin(Math.PI * (1 - alpha*10)) * 0.4
- 
+      
+  display_label: () =>
+    legend = d3.select("svg").append("g").attr("class", "legend").attr("transform", "translate(50,30)").style("font-size", "12px").call(d3.legend)
+    setTimeout (->
+      legend.style("font-size", "20px").attr("data-style-padding", 10).call d3.legend
+    ), 100
+    
+  hide_label: () =>
+    legend = @vis.selectAll(".legend").remove() 
  
   display_axis: () =>
     margin =
