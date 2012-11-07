@@ -85,6 +85,8 @@ class BubbleChart
       .attr("r", 0)
       .attr("fill", (d) => @fill_color(d.subject))
       .attr("stroke-width", 2)
+      .attr("fill-opacity", 0.9)
+      .attr("stroke-opacity", 0.5)
       .attr("stroke", (d) => d3.rgb(@fill_color(d.subject)).darker())
       .attr("id", (d) -> "bubble_#{d.id}")
       .on("mouseover", (d,i) -> that.show_details(d,i,this))
