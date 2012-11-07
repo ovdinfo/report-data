@@ -374,4 +374,4 @@ $ ->
     else if view_type == 'type'
       root.display_type()
 
-  d3.csv "data/data.csv", render_vis
+  d3.csv "data/data2.csv", render_vis
