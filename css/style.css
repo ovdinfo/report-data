@@ -52,7 +52,7 @@ footer {
   left: 105px;
   width: 40px;
   height: 8px;
-  background: url(http://graphics8.nytimes.com/packages/images/newsgraphics/2012/0202-federal-budget/tail_white.png) 50% 0%;
+  background: url(../img/tail_white.png) 50% 0%;
 }
 
 .tooltip .data-type {
