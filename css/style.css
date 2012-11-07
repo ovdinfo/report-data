@@ -22,29 +22,81 @@ footer {
   fill: #aaa;
 }
 
-.tooltip {
-	position: absolute;
-	top: 100px;
-	left: 100px;
-  -moz-border-radius:5px;
-	border-radius: 5px;
-  border: 2px solid #000;
-	/* background: #222222; */
-  background: #fff;
-	opacity: .9;
-	/* color: #eeeeee; */
-  color: black;
-	padding: 10px;
-	width: 300px;
-	font-size: 12px;
-	z-index: 10;
+#data-report {
+  text-align:center;  
+  z-index: 1000;
+  position: absolute;
+  display: none;
 }
 
-.tooltip .title {
-	font-size: 13px;
+#tooltipContainer {
+  position: absolute;
+  bottom: 0;
+  width: 230px;
+  left: -125px;
+  font-size: 12px;
+  line-height: 16px;
+  padding: 10px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.9);
+  color: #000;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+  -moz-box-shadow: 0 1px 5px rgba(0,0,0,0.4);  
+  border:1px solid rgba(200,200,200,0.85);
+  text-align:center;
 }
 
-.tooltip .name {
+.tooltip .data-tail {
+  position: absolute;
+  bottom: -8px;
+  left: 105px;
+  width: 40px;
+  height: 8px;
+  background: url(http://graphics8.nytimes.com/packages/images/newsgraphics/2012/0202-federal-budget/tail_white.png) 50% 0%;
+}
+
+.tooltip .data-type {
+  text-transform: uppercase;
+  text-align: left;
+  font-size: 10px;
+  margin-bottom: 2px;
+  color:#666;
+  text-align:center;  
+
+}
+.tooltip .data-rule {
+  height:1px;
+  margin:1px auto 3px;
+  background:#ddd;
+  width:130px;
+}
+
+.tooltip .data-desc {
+  color:#666;
+/*   text-transform:uppercase;*/
+  font-size: 11px;   
+  text-align:center;  
+  font-style:italic;
+}
+.tooltip .data-date {
+  text-align: left;
+  font-size: 13px;
+/*  width:170px;*/
+ text-align:center;  
+}
+.tooltip .data-value {
+/*  position:absolute;*/
+ text-align:center;
+  right:10px;
+  top:28px;
+  font-size: 16px;
+/*  width:100px;*/
+ text-align:center;  
+  overflow:hidden;
   font-weight:bold;
+}
+
+.tooltip .data-valuesContainer {
+  padding-top:7px; 
 }
 
