@@ -268,7 +268,7 @@ class BubbleChart
     content +="<div class=\"data-valuesContainer\"><span class=\"data-value\">#{data.value}</span></div>"
     content +="<div class=\"data-tail\"></div>"
     content +="</div>"
-    @tooltip.showTooltip(content,d3.event)
+    @tooltip.showTooltip(content,element)
 
 
   hide_details: (data, i, element) =>

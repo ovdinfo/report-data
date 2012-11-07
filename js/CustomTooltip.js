@@ -13,6 +13,7 @@ function CustomTooltip(tooltipId, width){
 		$("#"+tooltipId).show();
 		
 		updatePosition(event);
+		//console.log(event);
 	}
 	
 	function hideTooltip(){
@@ -20,6 +21,14 @@ function CustomTooltip(tooltipId, width){
 	}
 	
 	function updatePosition(event){
+	    var ttleft = ($(window).width() - $('#vis').width())/2 - 42;
+	    var cx = $(event).attr("cx");
+	    var cy = $(event).attr("cy");
+	    var r = $(event).attr("r");
+	    r = Math.round(r);
+	    var tttop = 55 - r;
+	    cx = Math.round(cx) + ttleft;
+	    cy = Math.round(cy) + tttop;
 		var ttid = "#"+tooltipId;
 		var xOffset = 20;
 		var yOffset = 10;
@@ -30,7 +39,7 @@ function CustomTooltip(tooltipId, width){
 		 var wscrX = $(window).scrollLeft();
 		 var curX = (document.all) ? event.clientX + wscrX : event.pageX;
 		 var curY = (document.all) ? event.clientY + wscrY : event.pageY;
-		 var ttleft = ((curX - wscrX + xOffset*2 + ttw) > $(window).width()) ? curX - ttw - xOffset*2 : curX + xOffset;
+		 var ttleft = $(window).width() - $('#container').width()/2;
 		 if (ttleft < wscrX + xOffset){
 		 	ttleft = wscrX + xOffset;
 		 } 
@@ -38,7 +47,7 @@ function CustomTooltip(tooltipId, width){
 		 if (tttop < wscrY + yOffset){
 		 	tttop = curY + yOffset;
 		 } 
-		 $(ttid).css('top', tttop + 'px').css('left', ttleft + 'px');
+		 $(ttid).css('top', cy + 'px').css('left', cx + 'px');
 	}
 	
 	return {
