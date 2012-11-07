@@ -38,7 +38,7 @@ d3.legend = function(g) {
         .data(items,function(d) { return d.key})
         .call(function(d) { d.enter().append("circle")})
         .call(function(d) { d.exit().remove()})
-        .attr("cy",function(d,i) { return i-0.25+"em"})
+        .attr("cy",function(d,i) { return (i-0.25)+"em"})
         .attr("cx",0)
         .attr("r","0.4em")
         .style("fill",function(d) { console.log(d.value.color);return d.value.color})  

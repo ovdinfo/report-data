@@ -221,7 +221,7 @@ class BubbleChart
   display_label: () =>
     legend = d3.select("svg").append("g").attr("class", "legend").attr("transform", "translate(50,30)").style("font-size", "12px").call(d3.legend)
     setTimeout (->
-      legend.style("font-size", "20px").attr("data-style-padding", 10).call d3.legend
+      legend.call d3.legend
     ), 100
     
   hide_label: () =>
