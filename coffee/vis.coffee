@@ -1,9 +1,21 @@
-
 class BubbleChart
   constructor: (data) ->
     @data = data
     @width = 940
     @height = 600
+    
+    Array::unique = ->
+      output = {}
+      output[@[key]] = @[key] for key in [0...@length]
+      value for key, value of output
+    
+    organizators = []
+    i = 0
+    while i < @data.length
+      organizators.push @data[i].organizator
+      i++
+    #console.log @data
+    @organizators = organizators.unique()
 
     @tooltip = CustomTooltip("data-report", 240)
 
@@ -202,21 +214,58 @@ class BubbleChart
           .attr("cx", (d) -> d.x)
           .attr("cy", (d) -> d.y)
     @force.start()
-    
     this.hide_label()
     this.hide_years()
     this.hide_axis()
- 
+    
    move_towards_type: (alpha) =>
     (d) =>
-      targetY = 0
-      targetX = 0
-      if d.org is "Стихийное"
-        targetX = 100
-        targetY = 100
-      #alert d.org
-      d.y = d.y + (targetY - d.y) * Math.sin(Math.PI * (1 - alpha*10)) * 0.6
-      d.x = d.x + (targetX - d.x) * Math.sin(Math.PI * (1 - alpha*10)) * 0.4
+      position = @organizators.indexOf(d.org)
+      switch position
+        when 1
+          targetY = 100
+          targetX = 100
+        when 2
+          targetY = 100
+          targetX = 300
+        when 3
+          targetY = 100
+          targetX = 500
+        when 4
+          targetY = 200
+          targetX = 100
+        when 5
+          targetY = 200
+          targetX = 300
+        when 6
+          targetY = 200
+          targetX = 500
+        when 7
+          targetY = 300
+          targetX = 100
+        when 8
+          targetY = 300
+          targetX = 300
+        when 9
+          targetY = 300
+          targetX = 500
+        when 10
+          targetY = 400
+          targetX = 100
+        when 11
+          targetY = 400
+          targetX = 300
+        when 12
+          targetY = 400
+          targetX = 500
+        else
+          targetY = 0
+          targetX = 0
+      #targetY = 100*Math.round(position/4)
+      #targetX = 100+100*(position/4)
+      #console.log d.org
+      d.y = d.y + (targetY - d.y) * Math.sin(Math.PI * (1 - alpha*10)) * 0.009
+      d.x = d.x + (targetX - d.x) * Math.sin(Math.PI * (1 - alpha*10)) * 0.009
       
   display_label: () =>
     legend = d3.select("svg").append("g").attr("class", "legend").attr("transform", "translate(50,30)").style("font-size", "12px").call(d3.legend)
