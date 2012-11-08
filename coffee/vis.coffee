@@ -2,7 +2,7 @@ class BubbleChart
   constructor: (data) ->
     @data = data
     @width = 940
-    @height = 600
+    @height = 700
     
     Array::unique = ->
       output = {}
@@ -41,8 +41,8 @@ class BubbleChart
 
     # nice looking colors - no reason to buck the trend
     @fill_color = d3.scale.ordinal()
-      .domain(["За честные выборы", "С-31", "другое","pussy riot","антипутин","Другая Россия","политзеки","закон о митингах","точечная застройка","экология"])
-      .range(["#ffffff", "#000000", "#a6d5ff", "#ff00ee", "#ff0000", "#f7ff00", "#ff8c08", "#ff9c9c", "#b8a6ff", "#3fff05"])
+      .domain(["За честные выборы", "Стратегия-31", "другое","Pussy Riot","антиПутин","политзеки","закон о митингах","социальная","экология","марш миллионов","ЛГБТ","оккупай"])
+      .range(["#ecf8ff", "#fea61b", "#e4e4e4", "#fc78ea", "#323232", "#cc91f9", "#98a422", "#e33320", "#20cc1a", "#f8fdb3", "#76f7fb", "#6e72f7"])
 
     # use the max total_amount in the data as the max in the scale's domain
     max_amount = d3.max(@data, (d) -> parseInt(d.total))
@@ -223,44 +223,62 @@ class BubbleChart
       position = @organizators.indexOf(d.org)
       switch position
         when 1
-          targetY = 100
-          targetX = 100
+          targetY = 200
+          targetX = 200
         when 2
-          targetY = 100
-          targetX = 300
+          targetY = 200
+          targetX = 400
         when 3
-          targetY = 100
-          targetX = 500
+          targetY = 200
+          targetX = 600
         when 4
           targetY = 200
-          targetX = 100
+          targetX = 800
         when 5
-          targetY = 200
-          targetX = 300
+          targetY = 300
+          targetX = 200
         when 6
-          targetY = 200
-          targetX = 500
+          targetY = 300
+          targetX = 400
         when 7
           targetY = 300
-          targetX = 100
+          targetX = 600
         when 8
           targetY = 300
-          targetX = 300
+          targetX = 800
         when 9
-          targetY = 300
-          targetX = 500
+          targetY = 400
+          targetX = 200
         when 10
           targetY = 400
-          targetX = 100
+          targetX = 300
         when 11
           targetY = 400
-          targetX = 300
+          targetX = 400
         when 12
           targetY = 400
           targetX = 500
+        when 13
+          targetY = 400
+          targetX = 600
+        when 14
+          targetY = 400
+          targetX = 700
+        when 15
+          targetY = 400
+          targetX = 800
+        when 16
+          targetY = 500
+          targetX = 200
+        when 17
+          targetY = 500
+          targetX = 400
+        when 18
+          targetY = 500
+          targetX = 600
         else
-          targetY = 0
-          targetX = 0
+          targetY = 500
+          targetX = 800
       #targetY = 100*Math.round(position/4)
       #targetX = 100+100*(position/4)
       #console.log d.org
@@ -374,4 +392,4 @@ $ ->
     else if view_type == 'type'
       root.display_type()
 
-  d3.csv "data/data2.csv", render_vis
+  d3.csv "data/data.csv", render_vis
