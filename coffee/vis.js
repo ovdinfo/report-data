@@ -32,35 +32,69 @@ BubbleChart = (function() {
     this.data = data;
     this.width = 940;
     this.height = 600;
+	this.orginizers = [];
+	this.prevOrginizerRadius = [];
+	this.prevOrginizerAngle = [];
 
-    this.getOrganizators = function() {
-	  var org = {};
-	  i = 0;
-      while (i < this.data.length) {
-        org[i]={"name":this.data[i].organizator, "value":this.data[i].total};
-        i++;
-      }
-      org = _.groupBy(org, function(num){ return num.name; });
-      org = _.map(org, function(group) {
-      	var sum = 0, name = '', output = {};
-      	i = 0;
-      	while (i < group.length) {
-        	sum += parseInt(group[i].value);
-        	name = group[i].name;
-        	i++;
-      	}
-      	output.name = name;
-      	output.total = sum;
-      	return output;
-		});
-	  org = _.sortBy(org, function(obj){ return obj.total; });
-	  org = org.reverse();
-      return org;
-    }
-    this.getOrganizatorsArray = function () {
-      var orgs = this.getOrganizators();
-      return _.map(orgs, function(group) { return group.name; });
-    }
+    var totalRadSum = 0;
+		for(i=0;i<org.length;i++){
+			org[i].radius = this.radius_scale(org[i].total);
+			totalRadSum+=org[i].radius*2;
+			//org[i].startAngle = totalRadSum/2
+			//console.log(totalRadSum*180/Math.PI)
+			
+		}
+		var curAngle = 0;
+		var angleMargin = 1/360;
+		var withoutMargins = 1-2*org.length*angleMargin;
+		for(i=0;i<org.length-1;i++){
+			//org[i].rel = org[i].total/totalSum;
+			org[i].angle = curAngle
+			org[i].startAngle = org[i].angle+Math.PI/2
+			//alert(org[i].angle)
+			console.log(260*Math.sin(org[i].angle))
+			curAngle+=(2*angleMargin+(org[i].radius+org[i+1].radius)/totalRadSum*withoutMargins)*2*Math.PI;
+		}
+		org[i].angle = curAngle;
+		org[i].startAngle = org[i].angle+Math.PI/2
+		//alert(curAngle);
+		
+	 max_amount = d3.max(this.data, function(d) {
+      return parseInt(d.total);
+    });
+    window.max_amount = max_amount;
+    
+    this.radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([1, 80]);
+	
+	
+	var totalRadSum = 0;
+		for(i=0;i<org.length;i++){
+			org[i].radius = this.radius_scale(org[i].total);
+			totalRadSum+=org[i].radius*2;
+			//org[i].startAngle = totalRadSum/2
+			//console.log(totalRadSum*180/Math.PI)
+			
+		}
+		var curAngle = 0;
+		var angleMargin = 1/360;
+		var withoutMargins = 1-2*org.length*angleMargin;
+		for(i=0;i<org.length-1;i++){
+			//org[i].rel = org[i].total/totalSum;
+			org[i].angle = curAngle
+			org[i].startAngle = org[i].angle+Math.PI/2
+			//alert(org[i].angle)
+			console.log(260*Math.sin(org[i].angle))
+			curAngle+=(2*angleMargin+(org[i].radius+org[i+1].radius)/totalRadSum*withoutMargins)*2*Math.PI;
+		}
+		org[i].angle = curAngle;
+		org[i].startAngle = org[i].angle+Math.PI/2
+		//alert(curAngle);
+	
+	
+	this.getOrganizators = org;
+	
+    this.getOrganizatorsArray = _.map(this.getOrganizators, function(group) { return group.name; });
+	
     
     this.tooltip = CustomTooltip("data-report", 240);
 
@@ -88,12 +122,7 @@ BubbleChart = (function() {
     this.circles = null;
     this.fill_color = d3.scale.ordinal().domain(["За честные выборы", "Стратегия-31", "другое", "Pussy Riot", "антиПутин", "политзеки", "закон о митингах", "социальная", "экология", "марш миллионов", "ЛГБТ", "оккупай"]).range(["#ecf8ff", "#fea61b", "#e4e4e4", "#fc78ea", "#323232", "#cc91f9", "#98a422", "#e33320", "#20cc1a", "#f8fdb3", "#76f7fb", "#6e72f7"]);
 
-    max_amount = d3.max(this.data, function(d) {
-      return parseInt(d.total);
-    });
-    window.max_amount = max_amount;
-    
-    this.radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([1, 80]);
+   
     this.create_nodes();
     this.create_vis();
   }
@@ -101,6 +130,7 @@ BubbleChart = (function() {
 // GENERATE BUBLES USING DATASET
   BubbleChart.prototype.create_nodes = function() {
     var _this = this;
+	
     this.data.forEach(function(d) {
       var node;
       node = {
@@ -110,13 +140,27 @@ BubbleChart = (function() {
         name: d.subject,
         org: d.organizator,
         group: d.type,
-        year: d.agreement,
+        year: d.agreement,	
+
         date: d.date,
         comment: d.comment,
         subject: d.subject,
         x: Math.random() * 900,
         y: Math.random() * 800
       };
+	  if(_this.orginizers[node.org] || _this.orginizers[node.org] == 0){
+		  _this.orginizers[node.org]++;
+	  	var obj = _this.getOrganizators[_this.getOrganizatorsArray.indexOf(node.org)];
+		  node.angle = (_this.prevOrginizerRadius[node.org]+node.radius)/(4*obj.radius)*Math.PI+_this.prevOrginizerAngle[node.org];
+	  }
+	  else{
+		  _this.orginizers[node.org] = 0;
+		  node.angle = 0;
+	  }
+		_this.prevOrginizerRadius[node.org] = node.radius;
+		_this.prevOrginizerAngle[node.org] = node.angle;
+	 node.inOrgID = _this.orginizers[node.org];
+	
       return _this.nodes.push(node);
     });
     return this.nodes.sort(function(a, b) {
@@ -370,21 +414,42 @@ BubbleChart = (function() {
 
   BubbleChart.prototype.move_towards_type = function(alpha) {
     var _this = this;
-    var orgs = _this.getOrganizators();
-    var orgsArr = _this.getOrganizatorsArray();
+    var orgs = _this.getOrganizators;
+    var orgsArr = _this.getOrganizatorsArray;
     return function(d) {
-      var position, targetX, targetY;
+		//console.log(d);
+	  //alert(d.radius);
+	   var position, targetX, targetY, radius, delta, centerX, centerY;
+	  centerX = 400;
+	  centerY = 300;
+	  radius = 260
+	 // delta = Math.PI/8;
       position = orgsArr.indexOf(d.org);
-      if (position < 4) {
+	  var obj = orgs[position];
+	  targetX = centerX+Math.cos(obj.angle)*radius;
+	  targetY = centerY+Math.sin(obj.angle)*radius;
+      /*if (position < 4) {
       	targetY = 200;
       }
       else {
       	targetY = 200 * Math.floor(position / 4) + 200*(orgs[position-(position % 4)].total/500);
       }
-      targetX = 200 + 200 * (position % 4);
-      d.y = d.y + (targetY - d.y) * Math.sin(Math.PI * (1 - alpha * 10)) * 0.009;
-      //console.log(position);
-      return d.x = d.x + (targetX - d.x) * Math.sin(Math.PI * (1 - alpha * 10)) * 0.009;
+      targetX = 200 + 200 * (position % 4);*/
+      //d.y = d.y + (targetY - d.y) * Math.sin(Math.PI * (1 - alpha * 10)) * 0.009;
+	  //alert(targetY+(obj.radius-d.radius)*(1-alpha)*Math.sin((d.radius*d.id)*Math.PI));
+	  if(alpha > 0.05){
+		  d.y = d.y +(targetY-d.y)*(1-alpha*10)*2+(obj.radius-d.radius)*(1-alpha)*Math.sin(d.angle+obj.startAngle);
+		  return d.x = d.x + (targetX-d.x)*(1-alpha*10)*2+(obj.radius-d.radius)*(1-alpha)*Math.cos(d.angle+obj.startAngle);
+	  }
+	  else{
+		  d.y = targetY+(obj.radius-d.radius)*(1-alpha)*Math.sin(d.angle+obj.startAngle);
+		  if(d.id==61){
+			  //console.log(alpha);
+		  }
+		  //return d.x = d.x + (targetX - d.x) * Math.sin(Math.PI * (1 - alpha * 10)) * 0.009;
+		  return d.x = targetX+(obj.radius-d.radius)*(1-alpha)*Math.cos(d.angle+obj.startAngle);
+	  }
+	  
     };
   };
   
