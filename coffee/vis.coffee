@@ -221,66 +221,66 @@ class BubbleChart
    move_towards_type: (alpha) =>
     (d) =>
       position = @organizators.indexOf(d.org)
-      switch position
-        when 1
-          targetY = 200
-          targetX = 200
-        when 2
-          targetY = 200
-          targetX = 400
-        when 3
-          targetY = 200
-          targetX = 600
-        when 4
-          targetY = 200
-          targetX = 800
-        when 5
-          targetY = 300
-          targetX = 200
-        when 6
-          targetY = 300
-          targetX = 400
-        when 7
-          targetY = 300
-          targetX = 600
-        when 8
-          targetY = 300
-          targetX = 800
-        when 9
-          targetY = 400
-          targetX = 200
-        when 10
-          targetY = 400
-          targetX = 300
-        when 11
-          targetY = 400
-          targetX = 400
-        when 12
-          targetY = 400
-          targetX = 500
-        when 13
-          targetY = 400
-          targetX = 600
-        when 14
-          targetY = 400
-          targetX = 700
-        when 15
-          targetY = 400
-          targetX = 800
-        when 16
-          targetY = 500
-          targetX = 200
-        when 17
-          targetY = 500
-          targetX = 400
-        when 18
-          targetY = 500
-          targetX = 600
-        else
-          targetY = 500
-          targetX = 800
-      #targetY = 100*Math.round(position/4)
-      #targetX = 100+100*(position/4)
+#      switch position
+#        when 1
+#          targetY = 200
+#          targetX = 200
+#        when 2
+#          targetY = 200
+#          targetX = 400
+#        when 3
+#          targetY = 200
+#          targetX = 600
+#        when 4
+#          targetY = 200
+#          targetX = 800
+#        when 5
+#          targetY = 300
+#          targetX = 200
+#        when 6
+#          targetY = 300
+#          targetX = 400
+#        when 7
+#          targetY = 300
+#          targetX = 600
+#        when 8
+#          targetY = 300
+#          targetX = 800
+#        when 9
+#          targetY = 400
+#          targetX = 200
+#        when 10
+#          targetY = 400
+#          targetX = 300
+#        when 11
+#          targetY = 400
+#          targetX = 400
+#        when 12
+#          targetY = 400
+#          targetX = 500
+#        when 13
+#          targetY = 400
+#          targetX = 600
+#        when 14
+#          targetY = 400
+#          targetX = 700
+#        when 15
+#          targetY = 400
+#          targetX = 800
+#        when 16
+#          targetY = 500
+#          targetX = 200
+#        when 17
+#          targetY = 500
+#          targetX = 400
+#        when 18
+#          targetY = 500
+#          targetX = 600
+#        else
+#          targetY = 500
+#          targetX = 800
+      targetY = 100*Math.round(position/4)
+      targetX = 200+200*(position%4)
       #console.log d.org
       d.y = d.y + (targetY - d.y) * Math.sin(Math.PI * (1 - alpha*10)) * 0.009
       d.x = d.x + (targetX - d.x) * Math.sin(Math.PI * (1 - alpha*10)) * 0.009

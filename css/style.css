@@ -4,7 +4,7 @@ a, a:visited, a:active {
 
 #vis {
   width: 940px;
-  height: 600px;
+  height: 630px;
   clear: both;
   margin-bottom: 10px;
 }
@@ -112,3 +112,22 @@ text {
   fill: #666;
 }
 
+#count {
+  font-size: 30px;
+  line-height: 30px;
+  text-align: center;
+}
+
+#dates {
+  font-size: 30px;
+  line-height: 30px;
+  text-align: center;
+}
+
+#date-slider, #det-slider {
+  height:80px;
+}
+
+div.ui-rangeSlider-label {
+  bottom:90px;
+}
