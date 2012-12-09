@@ -36,28 +36,31 @@ BubbleChart = (function() {
 	this.prevOrginizerRadius = [];
 	this.prevOrginizerAngle = [];
 
-    var totalRadSum = 0;
-		for(i=0;i<org.length;i++){
-			org[i].radius = this.radius_scale(org[i].total);
-			totalRadSum+=org[i].radius*2;
-			//org[i].startAngle = totalRadSum/2
-			//console.log(totalRadSum*180/Math.PI)
-			
-		}
-		var curAngle = 0;
-		var angleMargin = 1/360;
-		var withoutMargins = 1-2*org.length*angleMargin;
-		for(i=0;i<org.length-1;i++){
-			//org[i].rel = org[i].total/totalSum;
-			org[i].angle = curAngle
-			org[i].startAngle = org[i].angle+Math.PI/2
-			//alert(org[i].angle)
-			console.log(260*Math.sin(org[i].angle))
-			curAngle+=(2*angleMargin+(org[i].radius+org[i+1].radius)/totalRadSum*withoutMargins)*2*Math.PI;
-		}
-		org[i].angle = curAngle;
-		org[i].startAngle = org[i].angle+Math.PI/2
-		//alert(curAngle);
+   var org = {};
+	  i = 0;
+      while (i < this.data.length) {
+        org[i]={"name":this.data[i].organizator, "value":this.data[i].total};
+        i++;
+      }
+      org = _.groupBy(org, function(num){ return num.name; });
+      org = _.map(org, function(group) {
+      	var sum = 0, name = '', output = {};
+      	i = 0;
+      	while (i < group.length) {
+        	sum += parseInt(group[i].value);
+        	name = group[i].name;
+        	i++;
+      	}
+      	output.name = name;
+      	output.total = sum;
+		output.maxRad = d3.max(group, function(d) {
+		  return parseInt(d.value);
+		});
+		//alert(output.maxRad);
+      	return output;
+		});
+	  org = _.sortBy(org, function(obj){ return obj.total; });
+	  org = org.reverse();
 		
 	 max_amount = d3.max(this.data, function(d) {
       return parseInt(d.total);
