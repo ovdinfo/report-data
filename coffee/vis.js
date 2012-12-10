@@ -225,6 +225,7 @@ BubbleChart = (function() {
     this.force.start();
     this.display_label();
     this.hide_years();
+    this.hide_orgs();
     return this.hide_axis();
   };
 
@@ -248,6 +249,10 @@ BubbleChart = (function() {
     var legend;
     return legend = this.vis.selectAll(".legend").remove();
   };
+  BubbleChart.prototype.hide_orgs = function() {
+ 	 this.vis.selectAll(".orgTotal").remove();
+    return this.vis.selectAll(".orgLabel").remove();
+  };
   
 /////////////////////////////////
 
@@ -264,6 +269,7 @@ BubbleChart = (function() {
     this.force.start();
     this.hide_label();
     this.hide_axis();
+    this.hide_orgs();
     return this.display_years();
   };
 
@@ -314,6 +320,7 @@ BubbleChart = (function() {
     this.force.start();
     this.hide_label();
     this.hide_years();
+    this.hide_orgs();
     $("#det-slider").bind("valuesChanged", function(e, data){ 
       _this.update();
       $( "#count" ).empty().append( "задержания от " + Math.round(data.values.min) +  " до " + Math.round(data.values.max) + " человек" );
@@ -402,6 +409,13 @@ BubbleChart = (function() {
 
   BubbleChart.prototype.display_by_type = function() {
     var _this = this;
+	this.hide_orgs();
+	var orgs = _this.getOrganizators
+	for(i=0;i<orgs.length;i++){
+		this.vis.append("text").attr("class", "orgLabel").attr("y",50+25*i).attr("x", 800).text(orgs[i].name);
+		this.vis.append("text").attr("class", "orgTotal").attr("y",50+25*i).attr("x", 760).text(orgs[i].total);
+		//alert(orgs[i].name);
+	}
     this.force.gravity(this.layout_gravity).charge(this.charge).friction(0.9).on("tick", function(e) {
       return _this.circles.each(_this.move_towards_type(e.alpha)).attr("cx", function(d) {
         return d.x;
